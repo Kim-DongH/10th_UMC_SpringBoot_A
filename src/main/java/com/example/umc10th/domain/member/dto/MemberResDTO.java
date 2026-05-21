@@ -37,4 +37,8 @@ public class MemberResDTO {
             Integer rating,
             String content
     ) {}
+
+    public record Login(
+            String accessToken
+    ) {}
 }

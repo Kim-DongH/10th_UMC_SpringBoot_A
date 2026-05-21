@@ -4,7 +4,8 @@ public class AuthResDTO {
 
     public record SignUpResult (
             Long memberId,
-            String email
+            String email,
+            String accessToken
     ){}
 
     public record OnboardingResult(

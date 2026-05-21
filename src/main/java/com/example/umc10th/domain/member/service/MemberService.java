@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.member.service;
 
+import com.example.umc10th.domain.member.converter.MemberConverter;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.exception.MemberException;
@@ -9,6 +10,7 @@ import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
 import com.example.umc10th.domain.mission.enums.MissionCompleteStatus;
 import com.example.umc10th.domain.mission.repository.MemberMissionRepository;
 import com.example.umc10th.domain.review.repository.ReviewRepository;
+import com.example.umc10th.global.security.entity.AuthMember;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -84,6 +86,12 @@ public class MemberService {
                  member.getNotificationEnabled(),
                  reviews
          );
+     }
+
+     public MemberResDTO.MyPage getMyPage(
+             AuthMember member
+     ){
+        return MemberConverter.toGetInfo(member.getMember());
      }
 
 }

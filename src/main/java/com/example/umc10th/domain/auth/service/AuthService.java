@@ -4,6 +4,8 @@ import com.example.umc10th.domain.auth.dto.AuthReqDTO;
 import com.example.umc10th.domain.auth.dto.AuthResDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.repository.MemberRepository;
+import com.example.umc10th.global.security.entity.AuthMember;
+import com.example.umc10th.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ public class AuthService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public AuthResDTO.SignUpResult signUp(AuthReqDTO.SignUp dto)
     {
@@ -27,10 +30,13 @@ public class AuthService {
                 .build();
 
         Member savedMember = memberRepository.save(member);
+        AuthMember authMember = new AuthMember(savedMember);
+        String accessToken = jwtUtil.createAccessToken(authMember);
 
         return new AuthResDTO.SignUpResult(
                 savedMember.getId(),
-                savedMember.getEmail()
+                savedMember.getEmail(),
+                accessToken
         );
     }
 }

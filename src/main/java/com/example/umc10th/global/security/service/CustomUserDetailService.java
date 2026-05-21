@@ -1,6 +1,7 @@
 package com.example.umc10th.global.security.service;
 
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.member.exception.MemberException;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
@@ -23,6 +24,13 @@ public class CustomUserDetailService implements UserDetailsService {
     ) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(username)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+        return new AuthMember(member);
+    }
+
+    public UserDetails loadUserByUidAndSocialType(SocialType socialType, String uid) {
+        Member member = memberRepository.findBySocialTypeAndSocialUid(socialType, uid)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
         return new AuthMember(member);
     }
 }
